@@ -1,0 +1,113 @@
+class ToDoList:
+    def __init__(self):
+        self.tasks = []
+
+    def add_task(self):
+        """Add a new task to the to-do list."""
+        task = input("Enter the task description: ").strip()
+        if not task:
+            print("Task description cannot be empty.")
+            return
+        self.tasks.append({"task": task, "completed": False})
+        print(f"Task added: '{task}'")
+
+    def view_tasks(self):
+        """View all tasks with their completion status."""
+        if not self.tasks:
+            print("Your to-do list is empty.")
+            return
+        
+        print("\nYour To-Do List:")
+        for idx, task in enumerate(self.tasks, start=1):
+            status = "Completed" if task["completed"] else "Not Completed"
+            print(f"{idx}. {task['task']} [{status}]")
+        print()
+
+    def mark_task_completed(self):
+        """Mark a specific task as completed."""
+        if not self.tasks:
+            print("Your to-do list is empty.")
+            return
+
+        self.view_tasks()
+        try:
+            task_number = int(input("Enter the number of the task to mark as completed: "))
+            if 1 <= task_number <= len(self.tasks):
+                self.tasks[task_number - 1]["completed"] = True
+                print(f"Task marked as completed: '{self.tasks[task_number - 1]['task']}'")
+            else:
+                print("Invalid task number.")
+        except ValueError:
+            print("Please enter a valid number.")
+
+    def update_task(self):
+        """Update the description of a specific task."""
+        if not self.tasks:
+            print("Your to-do list is empty.")
+            return
+
+        self.view_tasks()
+        try:
+            task_number = int(input("Enter the number of the task to update: "))
+            if 1 <= task_number <= len(self.tasks):
+                new_description = input("Enter the new task description: ").strip()
+                if new_description:
+                    old_task = self.tasks[task_number - 1]["task"]
+                    self.tasks[task_number - 1]["task"] = new_description
+                    print(f"Task updated from '{old_task}' to '{new_description}'")
+                else:
+                    print("Task description cannot be empty.")
+            else:
+                print("Invalid task number.")
+        except ValueError:
+            print("Please enter a valid number.")
+
+    def delete_task(self):
+        """Delete a specific task from the to-do list."""
+        if not self.tasks:
+            print("Your to-do list is empty.")
+            return
+
+        self.view_tasks()
+        try:
+            task_number = int(input("Enter the number of the task to delete: "))
+            if 1 <= task_number <= len(self.tasks):
+                deleted_task = self.tasks.pop(task_number - 1)["task"]
+                print(f"Task deleted: '{deleted_task}'")
+            else:
+                print("Invalid task number.")
+        except ValueError:
+            print("Please enter a valid number.")
+
+    def run(self):
+        """Main function to run the To-Do List application."""
+        while True:
+            print("\nTo-Do List Menu:")
+            print("1. Add Task")
+            print("2. View Tasks")
+            print("3. Mark Task as Completed")
+            print("4. Update Task")
+            print("5. Delete Task")
+            print("6. Exit")
+            choice = input("Choose an option (1-6): ").strip()
+
+            if choice == "1":
+                self.add_task()
+            elif choice == "2":
+                self.view_tasks()
+            elif choice == "3":
+                self.mark_task_completed()
+            elif choice == "4":
+                self.update_task()
+            elif choice == "5":
+                self.delete_task()
+            elif choice == "6":
+                print("Exiting To-Do List. Goodbye!")
+                break
+            else:
+                print("Invalid choice. Please try again.")
+
+# Start the application
+if __name__ == "__main__":
+    todo_list = ToDoList()
+    todo_list.run()
